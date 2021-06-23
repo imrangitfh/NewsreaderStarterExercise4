@@ -3,6 +3,8 @@ package at.ac.fhcampuswien.newsanalyzer.ui;
 
 import at.ac.fhcampuswien.newsanalyzer.ctrl.Controller;
 import at.ac.fhcampuswien.newsanalyzer.ctrl.NewsAPIException;
+import at.ac.fhcampuswien.newsanalyzer.downloader.ParallelDownloader;
+import at.ac.fhcampuswien.newsanalyzer.downloader.SequentialDownloader;
 import at.ac.fhcampuswien.newsapi.NewsApi;
 import at.ac.fhcampuswien.newsapi.NewsApiBuilder;
 import at.ac.fhcampuswien.newsapi.enums.Country;
@@ -47,8 +49,19 @@ public class UserInterface {
 		menu.insert("x", "Shortest author name", this::getShortestNameOfAuthors);	// Exercise 3
 		menu.insert("y", "Get article count", this::getArticleCount);	// Exercise 3
 		menu.insert("z", "Sort by longest title", this::getSortArticlesByLongestTitle); // Exercise 3
-		menu.insert("g", "Download URLs", () -> {
+		menu.insert("g", "Download URLs sequential", () -> {
 			//Todo
+			SequentialDownloader seqDownloader = new SequentialDownloader();
+			seqDownloader.process(ctrl.getUrls(), ctrl.getTitles());
+		});
+		menu.insert("p", "Download URLs parallel", () -> {
+			//Todo
+			ParallelDownloader parDownloader = new ParallelDownloader();
+			try{
+				parDownloader.process(ctrl.getUrls(),ctrl.getTitles());
+			}catch (Exception e){
+				e.printStackTrace();
+			}
 		});
 		menu.insert("q", "Quit", null);
 		Runnable choice;

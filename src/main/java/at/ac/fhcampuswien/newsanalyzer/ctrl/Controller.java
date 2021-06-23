@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class Controller {
 
-	public static final String APIKEY = "0038b5ccc1124e94b01d19b0d5982697";  //0038b5ccc1124e94b01d19b0d5982697
+	public static final String APIKEY = "2a5f8954097d4d1b9ea4f6b2a98481cc";
 
 	private List<Article> articles = null;
 
@@ -83,5 +83,11 @@ public class Controller {
 				.max(Comparator.comparingInt(o -> o.getValue().size()))
 				.map(stringListEntry -> stringListEntry.getKey() + " " + stringListEntry.getValue().size())
 				.orElseThrow();
+	}
+	public List<String> getUrls(){
+		return articles.stream().map(Article::getUrl).collect(Collectors.toList());
+	}
+	public List<String> getTitles(){
+		return articles.stream().map(Article::getTitle).collect(Collectors.toList());
 	}
 }

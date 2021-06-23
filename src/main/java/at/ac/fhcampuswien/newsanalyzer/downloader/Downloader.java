@@ -1,9 +1,6 @@
 package at.ac.fhcampuswien.newsanalyzer.downloader;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
@@ -13,9 +10,9 @@ public abstract class Downloader {
     public static final String HTML_EXTENTION = ".html";
     public static final String DIRECTORY_DOWNLOAD = "./download/";
 
-    public abstract int process(List<String> urls);
+    public abstract int process(List<String> urls,List<String> titles) throws InterruptedException;
 
-    public String saveUrl2File(String urlString) {
+    public String saveUrl2File(String urlString, String title) {
         InputStream is = null;
         OutputStream os = null;
         String fileName = "";
@@ -27,7 +24,14 @@ public abstract class Downloader {
             if (fileName.isEmpty()) {
                 fileName = url4download.getHost() + HTML_EXTENTION;
             }
-            os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName);
+            fileName = title + HTML_EXTENTION;
+            try{
+                os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName);
+            }catch (FileNotFoundException e){
+                System.err.println("URL of File has illegal characters for the filename");
+            }
+
+            System.out.println(fileName);
 
             byte[] b = new byte[2048];
             int length;
